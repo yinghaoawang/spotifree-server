@@ -10,6 +10,17 @@ var app = require('../app');
 var debug = require('debug')('spotifree-backend:server');
 var http = require('http');
 
+var https = require('https');
+var fs = require('fs');
+const privKeyPath = process.env.PRIV_KEY_PATH
+const certPath = process.env.CERT_PATH
+const caPath = process.env.CA_PATH
+
+var privateKey  = fs.readFileSync(privKeyPath, 'utf8');
+var certificate = fs.readFileSync(certPath, 'utf8');
+var ca = fs.readFileSync(caPath, 'utf8');
+var credentials = {key: privateKey, cert: certificate, ca};
+
 /**
  * Get port from environment and store in Express.
  */
@@ -21,12 +32,13 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(credentials, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
+console.log('Listening on port ' + port);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
