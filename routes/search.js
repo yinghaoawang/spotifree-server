@@ -1,5 +1,19 @@
 var express = require('express');
+var { decode } = require('html-entities');
 var router = express.Router();
+
+// destructively decodes ascii, i.e: &#39; to '
+const decodeObjectProperties = (obj) => {
+  for (const key in obj) {
+    if (typeof obj[key] === 'string') {
+      obj[key] = decode(obj[key]);
+    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+      decodeObjectProperties(obj[key]);
+    }
+  }
+
+  return obj;
+};
 
 /* GET users listing. */
 router.get('/:query', async function (req, res, next) {
@@ -7,7 +21,7 @@ router.get('/:query', async function (req, res, next) {
   if (query.trim() == '') {
     return res.json({ error: 'Enter a search query' });
   }
-  
+
   const searchQuery = query + ' audio';
   const searchOptions = `type=video&part=snippet&videoCategoryId=10&order=relevance&maxResults=20`;
   const data = await fetch(
@@ -19,7 +33,12 @@ router.get('/:query', async function (req, res, next) {
     }
   ).then((d) => d.json());
 
-  res.json({ message: 'respond with a resource', data });
+  console.log(decodeObjectProperties(data));
+
+  res.json({
+    message: 'respond with a resource',
+    data: decodeObjectProperties(data)
+  });
 });
 
 module.exports = router;
