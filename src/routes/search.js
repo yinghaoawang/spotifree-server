@@ -15,7 +15,6 @@ const decodeObjectProperties = (obj) => {
   return obj;
 };
 
-/* GET users listing. */
 router.get('/:query', async function (req, res, next) {
   const query = req.params.query;
   if (query.trim() == '') {
