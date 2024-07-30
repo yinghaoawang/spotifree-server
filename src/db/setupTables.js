@@ -12,6 +12,24 @@ const createTables = async () => {
         );
       `);
 
+      await t.none(`
+        CREATE TABLE IF NOT EXISTS videos (
+          id VARCHAR(255) PRIMARY KEY UNIQUE NOT NULL,
+          title VARCHAR(255) NOT NULL,
+          artist_name VARCHAR(255) UNIQUE NOT NULL,
+          duration INT NOT NULL,
+          art_src TEXT NOT NULL
+        );
+      `);
+
+      await t.none(`
+        CREATE TABLE IF NOT EXISTS plays (
+          id SERIAL PRIMARY KEY,
+          video_id VARCHAR(255) REFERENCES videos(id) NOT NULL,
+          user_id INT REFERENCES users(id) NOT NULL
+        );
+      `);
+
       // Add more table creation queries here
     });
 
@@ -25,6 +43,8 @@ const recreateTables = async () => {
   try {
     await db.tx(async (t) => {
       await t.none('DROP TABLE IF EXISTS users CASCADE;');
+      await t.none('DROP TABLE IF EXISTS videos CASCADE;');
+      await t.none('DROP TABLE IF EXISTS plays CASCADE;');
       // Drop other tables if needed
 
       await createTables();
