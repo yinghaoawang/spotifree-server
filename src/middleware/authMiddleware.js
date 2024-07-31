@@ -11,7 +11,7 @@ const authenticateToken = (req, res, next) => {
   const user = verifyToken(token);
   if (user == null) {
     logger.warn('Failed to authenticate token');
-    return res.status(403).json({ error: 'Invalid token' });
+    return res.status(440).json({ error: 'Invalid token' });
   }
 
   req.user = user;
