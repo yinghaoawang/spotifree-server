@@ -22,7 +22,10 @@ router.post('/add_play', authenticateToken, async function (req, res, next) {
     art_src
   );
   const play = await createPlay(userId, video_id);
-  res.json({ video, play });
+
+  const plays = await getUserPlaysByVideoId(userId, video_id);
+  const playCount = plays?.length;
+  res.json({ video, play, playCount });
 });
 
 router.post('/get_plays', authenticateToken, async function (req, res, next) {
