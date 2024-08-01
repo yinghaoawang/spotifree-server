@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon",
-    "db:create": "node src/db/setupTables.js create",
-    "db:recreate": "node src/db/setupTables.js recreate"
+    "db:create": "node src/db/setup/setupTables.js create",
+    "db:recreate": "node src/db/setup/setupTables.js recreate"
 
   },
   "dependencies": {

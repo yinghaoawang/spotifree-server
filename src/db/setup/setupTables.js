@@ -1,5 +1,5 @@
 require('dotenv').config();
-const db = require('./index');
+const db = require('../index');
 
 const createTables = async () => {
   try {
@@ -84,8 +84,3 @@ const cli = async () => {
 if (require.main === module) {
   cli();
 }
-
-module.exports = {
-  createTables,
-  recreateTables
-};
