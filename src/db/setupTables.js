@@ -8,7 +8,8 @@ const createTables = async () => {
         CREATE TABLE IF NOT EXISTS users (
           id SERIAL PRIMARY KEY,
           username VARCHAR(255) UNIQUE NOT NULL,
-          password TEXT NOT NULL
+          password TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
       `);
 
@@ -18,7 +19,8 @@ const createTables = async () => {
           title VARCHAR(255) NOT NULL,
           artist_name VARCHAR(255) UNIQUE NOT NULL,
           duration INT NOT NULL,
-          art_src TEXT NOT NULL
+          art_src TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
       `);
 
@@ -26,7 +28,8 @@ const createTables = async () => {
         CREATE TABLE IF NOT EXISTS plays (
           id SERIAL PRIMARY KEY,
           video_id VARCHAR(255) REFERENCES videos(id) NOT NULL,
-          user_id INT REFERENCES users(id) NOT NULL
+          user_id INT REFERENCES users(id) NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
       `);
 
