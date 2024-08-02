@@ -31,10 +31,21 @@ const getRecentlyPlayed = async (count = 5, interval = '7 days') => {
   return db.any(query, [count, interval]);
 };
 
+const getTopUsers = async (count = 5, interval = '7 days') => {
+  const query = `SELECT u.*, COUNT(p.user_id) AS play_count
+    FROM plays p JOIN users u ON p.user_id = u.id
+    WHERE p.created_at >= NOW() - INTERVAL $2
+    GROUP BY u.id
+    ORDER BY play_count DESC
+    LIMIT $1`;
+  return db.any(query, [count, interval]);
+};
+
 module.exports = {
   createPlay,
   getUserPlays,
   getUserPlaysByVideoId,
   getVideoPlays,
-  getRecentlyPlayed
+  getRecentlyPlayed,
+  getTopUsers
 };
